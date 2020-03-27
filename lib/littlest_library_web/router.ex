@@ -2,6 +2,10 @@ defmodule LittlestLibraryWeb.Router do
   use LittlestLibraryWeb, :router
   use Pow.Phoenix.Router
 
+  pipeline :graphql do
+    plug(LittlestLibraryWeb.Plugs.AbsintheContext)
+  end
+
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: Pow.Phoenix.PlugErrorHandler
@@ -13,10 +17,6 @@ defmodule LittlestLibraryWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
   end
 
   scope "/" do
@@ -37,11 +37,17 @@ defmodule LittlestLibraryWeb.Router do
     # Add your protected routes here
   end
 
-  scope "/api" do
-    pipe_through :api
+  scope "/graph" do
+    pipe_through(:graphql)
+    forward("/", Absinthe.Plug, schema: LittlestLibraryWeb.Schema)
+  end
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: LittlestLibraryWeb.Schema
+  scope "/graphiql" do
+    pipe_through(:graphql)
 
-    forward "/", Absinthe.Plug, schema: LittlestLibraryWeb.Schema
+    forward("/", Absinthe.Plug.GraphiQL,
+      schema: LittlestLibraryWeb.Schema,
+      interface: :playground
+    )
   end
 end
