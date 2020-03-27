@@ -37,8 +37,11 @@ defmodule LittlestLibraryWeb.Router do
     # Add your protected routes here
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", LittlestLibraryWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: LittlestLibraryWeb.Schema
+
+    forward "/", Absinthe.Plug, schema: LittlestLibraryWeb.Schema
+  end
 end

@@ -44,7 +44,10 @@ defmodule LittlestLibrary.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:pow, "~> 1.0.17"},
-      {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
+      {:absinthe_plug, "~> 1.4"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_phoenix, "~> 1.4"}
     ]
   end
 
