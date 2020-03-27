@@ -45,8 +45,8 @@ defmodule LittlestLibraryWeb.Endpoint do
   plug Plug.Session, @session_options
 
   plug Pow.Plug.Session,
-  otp_app: :littlest_library,
-  cache_store_backend: Pow.Store.Backend.MnesiaCache
+    otp_app: :littlest_library,
+    cache_store_backend: Pow.Store.Backend.MnesiaCache
 
   plug LittlestLibraryWeb.Router
 end
