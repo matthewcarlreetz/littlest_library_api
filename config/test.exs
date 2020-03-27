@@ -2,8 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :littlest_library, LittlestLibrary.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "matthewreetz",
   database: "littlest_library_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
