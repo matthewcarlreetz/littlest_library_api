@@ -8,8 +8,16 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
   def list_libraries(
         _parent,
         %{},
-        %{}
+        %{context: %{current_user: _current_user}}
       ) do
     {:ok, LibraryStore.list_libraries()}
+  end
+
+  def list_libraries(
+        _parent,
+        %{},
+        _
+      ) do
+    {:error, :unauthorized}
   end
 end

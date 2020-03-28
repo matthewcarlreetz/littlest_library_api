@@ -37,6 +37,6 @@ defmodule LittlestLibraryWeb.Resolvers.Users do
   end
 
   def current_user(_, _, _) do
-    {:ok, %{email: ""}}
+    {:error, :unauthorized}
   end
 end

@@ -9,9 +9,7 @@ defmodule LittlestLibraryWeb.APIAuthPlug do
   @impl true
   @spec fetch(Conn.t(), Config.t()) :: {Conn.t(), map() | nil}
   def fetch(conn, config) do
-    IO.inspect("FETCH!!!!!!!!!!!!!!!!!!!")
     token = fetch_auth_token(conn)
-    IO.inspect(token)
 
     config
     |> store_config()
@@ -25,7 +23,6 @@ defmodule LittlestLibraryWeb.APIAuthPlug do
   @impl true
   @spec create(Conn.t(), map(), Config.t()) :: {Conn.t(), map()}
   def create(conn, user, config) do
-    IO.inspect("CREATE!!!!!!!!!!!!!!!!!!!")
     store_config = store_config(config)
     token = Pow.UUID.generate()
     renew_token = Pow.UUID.generate()
@@ -44,7 +41,6 @@ defmodule LittlestLibraryWeb.APIAuthPlug do
   @impl true
   @spec delete(Conn.t(), Config.t()) :: Conn.t()
   def delete(conn, config) do
-    IO.inspect("DELETE!!!!!!!!!!!!!!!!!!!")
     token = fetch_auth_token(conn)
 
     config
@@ -61,7 +57,6 @@ defmodule LittlestLibraryWeb.APIAuthPlug do
   """
   @spec renew(Conn.t(), Config.t()) :: {Conn.t(), map() | nil}
   def renew(conn, config) do
-    IO.inspect("RENEW!!!!!!!!!!!!!!!!!")
     renew_token = fetch_auth_token(conn)
     store_config = store_config(config)
     res = PersistentSessionCache.get(store_config, renew_token)
