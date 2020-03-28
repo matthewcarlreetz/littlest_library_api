@@ -33,12 +33,12 @@ defmodule LittlestLibraryWeb.Resolvers.Users do
   end
 
   def current_user(_, _, %{context: %{conn: conn}}) do
-    IO.inspect(conn)
     config = Plug.fetch_config(conn)
 
-    IO.inspect(conn |> APIAuthPlug.fetch(config))
-    current_user = IO.inspect(conn |> Plug.current_user())
-    IO.inspect("FUCKS")
-    {:ok, user: current_user}
+    {_, u} = conn |> APIAuthPlug.fetch(config)
+    {:ok, %{email: u.email}}
+
+    # https://github.com/absinthe-graphql/absinthe/blob/master/guides/context-and-authentication.md
+    # should add user to the context like in this ^ guide
   end
 end
