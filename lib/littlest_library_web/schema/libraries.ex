@@ -19,5 +19,11 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
     field :libraries, list_of(:library) do
       resolve(&Libraries.list_libraries/3)
     end
+
+    field :nearby_libraries, list_of(:library) do
+      arg(:latitude, non_null(:float))
+      arg(:longitude, non_null(:float))
+      resolve(&Libraries.nearby_libraries/3)
+    end
   end
 end
