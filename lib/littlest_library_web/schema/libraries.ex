@@ -3,6 +3,7 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
   alias LittlestLibraryWeb.Resolvers.Libraries
 
   object :library do
+    field :id, :integer
     field :address, :string
     field :city, :string
     field :state, :string
@@ -18,6 +19,12 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
     @desc "Get all libraries"
     field :libraries, list_of(:library) do
       resolve(&Libraries.list_libraries/3)
+    end
+
+    field :nearby_libraries, list_of(:library) do
+      arg(:latitude, non_null(:float))
+      arg(:longitude, non_null(:float))
+      resolve(&Libraries.nearby_libraries/3)
     end
   end
 end
