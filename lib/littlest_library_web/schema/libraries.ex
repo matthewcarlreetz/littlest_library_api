@@ -3,6 +3,7 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
   alias LittlestLibraryWeb.Resolvers.Libraries
 
   object :library do
+    field :id, :integer
     field :address, :string
     field :city, :string
     field :state, :string
