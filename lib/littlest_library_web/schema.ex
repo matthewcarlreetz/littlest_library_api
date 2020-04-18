@@ -11,5 +11,6 @@ defmodule LittlestLibraryWeb.Schema do
 
   mutation do
     import_fields(:user_mutations)
+    import_fields(:library_mutations)
   end
 end
