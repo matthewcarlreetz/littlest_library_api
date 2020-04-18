@@ -1,5 +1,4 @@
 defmodule LittlestLibraryWeb.Plugs.AbsintheContext do
-  import Plug.Conn
   alias LittlestLibraryWeb.APIAuthPlug
   alias Pow.Plug
 

@@ -47,7 +47,9 @@ defmodule LittlestLibrary.MixProject do
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe, "~> 1.4"},
-      {:absinthe_phoenix, "~> 1.4"}
+      {:absinthe_phoenix, "~> 1.4"},
+      {:arc, "~> 0.11.0"},
+      {:arc_gcs, "~> 0.2.0"}
     ]
   end
 

@@ -10,8 +10,8 @@ defmodule LittlestLibrary.Libraries.Library do
     field :latitude, :float
     field :longitude, :float
     field :status, :string
-    field :image, :binary
-    field :thumbnail, :binary
+    field :image, :string
+    field :thumbnail, :string
 
     timestamps()
   end
