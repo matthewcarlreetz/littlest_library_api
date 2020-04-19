@@ -21,8 +21,10 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
     {:ok, Haversine.within_distance(all_libraries, {latitude, longitude}, 40)}
   end
 
-  def create_library(_parent, %{library_upload: library_upload}, _) do
-    IO.inspect(library_upload)
+  def create_library(_parent, %{file: file, latitude: latitude, longitude: longitude}, _) do
+    IO.inspect(file)
+    IO.inspect(latitude)
+    IO.inspect(longitude)
     # AvatarUploader.store(file)
   end
 end

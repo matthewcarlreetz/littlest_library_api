@@ -16,17 +16,12 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
     field :status, :string
   end
 
-  input_object :library_upload do
-    field(:file, :upload)
-    field(:latitude, non_null(:float))
-    field(:longitude, non_null(:float))
-  end
-
   object :library_mutations do
     @desc "Create a library"
     field :create_library, :library do
-      arg(:library_upload, non_null(:library_upload))
-
+      arg(:file, non_null(:upload))
+      arg(:latitude, non_null(:float))
+      arg(:longitude, non_null(:float))
       resolve(&Libraries.create_library/3)
     end
   end
