@@ -1,13 +1,11 @@
-defmodule LittlestLibrary.Avatar do
+defmodule LittlestLibrary.Uploaders.Avatar do
   use Arc.Definition
 
   # Include ecto support (requires package arc_ecto installed):
   # use Arc.Ecto.Definition
 
-  @versions [:original]
-
-  # To add a thumbnail version:
-  # @versions [:original, :thumb]
+  @acl :public_read
+  @versions [:original, :thumb]
 
   # Override the bucket on a per definition basis:
   # def bucket do
@@ -20,14 +18,24 @@ defmodule LittlestLibrary.Avatar do
   # end
 
   # Define a thumbnail transformation:
-  # def transform(:thumb, _) do
-  #   {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
-  # end
+  def transform(:thumb, _) do
+    {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
+  end
 
   # Override the persisted filenames:
-  # def filename(version, _) do
-  #   version
-  # end
+  def filename(version, _) do
+    version
+  end
+
+  def storage_dir(_version, {file}) do
+    IO.inspect("111111111111111111111")
+    "uploads/libraries/#{file.file_name}"
+  end
+
+  def storage_dir(_version, {_file, scope}) do
+    IO.inspect("2222222222222222222222222")
+    "uploads/libraries/#{scope.id}" |> IO.inspect()
+  end
 
   # Override the storage directory:
   # def storage_dir(version, {file, scope}) do
@@ -47,4 +55,7 @@ defmodule LittlestLibrary.Avatar do
   # def s3_object_headers(version, {file, scope}) do
   #   [content_type: MIME.from_path(file.file_name)]
   # end
+  def gcs_object_headers(_version, {file, _scope}) do
+    [content_type: MIME.from_path(file.file_name)]
+  end
 end

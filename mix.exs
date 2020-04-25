@@ -49,6 +49,7 @@ defmodule LittlestLibrary.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_phoenix, "~> 1.4"},
       {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.1"},
       {:arc_gcs, "~> 0.2.0"}
     ]
   end

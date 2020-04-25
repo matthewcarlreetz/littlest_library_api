@@ -1,6 +1,7 @@
 defmodule LittlestLibraryWeb.Resolvers.Libraries do
   alias LittlestLibrary.Libraries.LibraryStore
   alias LittlestLibrary.Utils.Haversine
+  alias LittlestLibrary.Uploaders.Avatar
 
   @moduledoc """
   Graph resolver for lane objects
@@ -21,10 +22,18 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
     {:ok, Haversine.within_distance(all_libraries, {latitude, longitude}, 40)}
   end
 
+  @spec create_library(
+          any,
+          %{file: binary | %{filename: any}, latitude: any, longitude: any},
+          any
+        ) :: {:ok, any}
   def create_library(_parent, %{file: file, latitude: latitude, longitude: longitude}, _) do
     IO.inspect(file)
     IO.inspect(latitude)
     IO.inspect(longitude)
-    # AvatarUploader.store(file)
+    Avatar.store({file, %{id: "asdf"}})
+    [head] = LibraryStore.list_libraries()
+
+    {:ok, head}
   end
 end

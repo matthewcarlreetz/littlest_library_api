@@ -31,7 +31,7 @@ config :littlest_library, :pow,
 
 config :arc,
   storage: Arc.Storage.GCS,
-  bucket: "littlest_libraries"
+  bucket: "little-dev"
 
 config :goth,
   json: "google-service-account.json" |> Path.expand() |> File.read!()
