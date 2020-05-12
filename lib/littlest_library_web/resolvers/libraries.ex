@@ -17,7 +17,7 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
 
   def nearby_libraries(_parent, %{latitude: latitude, longitude: longitude}, _) do
     # TODO: Filter this down with a sql query before running Haversine
-    all_libraries = LibraryStore.list_libraries()
+    all_libraries = LibraryStore.list_approved_libraries()
 
     libraries = Haversine.within_distance(all_libraries, {latitude, longitude}, 40)
 
@@ -30,6 +30,27 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
       end)
 
     {:ok, mapped_libraries}
+  end
+
+  def get_library(_parent, %{id: id}, info) do
+    requested_fields = Absinthe.Resolution.project(info) |> Enum.map(& &1.name)
+
+    lib = LibraryStore.get_library!(id)
+    avatar = %{avatar_uuid: lib.avatar_uuid}
+
+    lib =
+      if Enum.member?(requested_fields, "image") do
+        image = Avatar.url({"avatar.png", avatar})
+        Map.put(lib, :image, image)
+      end
+
+    lib =
+      if Enum.member?(requested_fields, "thumbnail") do
+        thumbnail = Avatar.url({"avatar.png", avatar}, :thumb)
+        Map.put(lib, :thumbnail, thumbnail)
+      end
+
+    {:ok, lib}
   end
 
   def create_library(
@@ -57,5 +78,23 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
       longitude: longitude,
       avatar_uuid: avatar_uuid
     })
+  end
+
+  def approve_library(_parent, %{id: id}, %{context: %{current_user: _current_user}}) do
+    lib = LibraryStore.get_library!(id)
+    LibraryStore.update_library(lib, %{status: "approved"})
+  end
+
+  def approve_library(_parent, %{}, _) do
+    {:error, :unauthorized}
+  end
+
+  def disapprove_library(_parent, %{id: id}, %{context: %{current_user: _current_user}}) do
+    lib = LibraryStore.get_library!(id)
+    LibraryStore.update_library(lib, %{status: "disapproved"})
+  end
+
+  def disapprove_library(_parent, %{}, _) do
+    {:error, :unauthorized}
   end
 end

@@ -22,6 +22,23 @@ defmodule LittlestLibrary.Libraries.LibraryStore do
   end
 
   @doc """
+  Returns the list of approved libraries.
+
+  ## Examples
+
+      iex> list_approve_libraries()
+      [%Library{}, ...]
+
+  """
+  def list_approved_libraries do
+    query =
+      from l in Library,
+        where: l.status == "approved"
+
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single library.
 
   Raises `Ecto.NoResultsError` if the Library does not exist.

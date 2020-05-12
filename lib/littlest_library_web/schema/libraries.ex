@@ -28,6 +28,18 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
       arg(:zip, non_null(:string))
       resolve(&Libraries.create_library/3)
     end
+
+    field :approve_library, :library do
+      @desc "Approve a library by id"
+      arg(:id, non_null(:id))
+      resolve(&Libraries.approve_library/3)
+    end
+
+    field :disapprove_library, :library do
+      @desc "Disapprove a library by id"
+      arg(:id, non_null(:id))
+      resolve(&Libraries.disapprove_library/3)
+    end
   end
 
   object :library_queries do
@@ -40,6 +52,12 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
       arg(:latitude, non_null(:float))
       arg(:longitude, non_null(:float))
       resolve(&Libraries.nearby_libraries/3)
+    end
+
+    field :library, :library do
+      @desc "Get a library by id"
+      arg(:id, non_null(:id))
+      resolve(&Libraries.get_library/3)
     end
   end
 end
