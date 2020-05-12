@@ -22,6 +22,10 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
       arg(:file, non_null(:upload))
       arg(:latitude, non_null(:float))
       arg(:longitude, non_null(:float))
+      arg(:address, non_null(:string))
+      arg(:city, non_null(:string))
+      arg(:state, non_null(:string))
+      arg(:zip, non_null(:string))
       resolve(&Libraries.create_library/3)
     end
   end

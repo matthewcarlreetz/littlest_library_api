@@ -19,21 +19,43 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
     # TODO: Filter this down with a sql query before running Haversine
     all_libraries = LibraryStore.list_libraries()
 
-    {:ok, Haversine.within_distance(all_libraries, {latitude, longitude}, 40)}
+    libraries = Haversine.within_distance(all_libraries, {latitude, longitude}, 40)
+
+    mapped_libraries =
+      libraries
+      |> Enum.map(fn lib ->
+        avatar = %{avatar_uuid: lib.avatar_uuid}
+        thumbnail = Avatar.url({"avatar.png", avatar}, :thumb)
+        Map.put(lib, :thumbnail, thumbnail)
+      end)
+
+    {:ok, mapped_libraries}
   end
 
-  @spec create_library(
-          any,
-          %{file: binary | %{filename: any}, latitude: any, longitude: any},
-          any
-        ) :: {:ok, any}
-  def create_library(_parent, %{file: file, latitude: latitude, longitude: longitude}, _) do
-    IO.inspect(file)
-    IO.inspect(latitude)
-    IO.inspect(longitude)
-    Avatar.store({file, %{id: "asdf"}})
-    [head] = LibraryStore.list_libraries()
+  def create_library(
+        _parent,
+        %{
+          file: file,
+          latitude: latitude,
+          longitude: longitude,
+          address: address,
+          city: city,
+          state: state,
+          zip: zip
+        },
+        _
+      ) do
+    avatar_uuid = Ecto.UUID.generate()
+    Avatar.store({file, %{avatar_uuid: avatar_uuid}})
 
-    {:ok, head}
+    LibraryStore.create_library(%{
+      address: address,
+      city: city,
+      state: state,
+      zip: zip,
+      latitude: latitude,
+      longitude: longitude,
+      avatar_uuid: avatar_uuid
+    })
   end
 end

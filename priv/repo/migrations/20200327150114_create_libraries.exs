@@ -9,8 +9,7 @@ defmodule LittlestLibrary.Repo.Migrations.CreateLibraries do
       add :zip, :string
       add :latitude, :float
       add :longitude, :float
-      add :image, :string, size: 2_560
-      add :thumbnail, :string, size: 2_560
+      add :avatar_uuid, :uuid
       add :status, :string
 
       timestamps()

@@ -28,13 +28,11 @@ defmodule LittlestLibrary.Uploaders.Avatar do
   end
 
   def storage_dir(_version, {file}) do
-    IO.inspect("111111111111111111111")
     "uploads/libraries/#{file.file_name}"
   end
 
   def storage_dir(_version, {_file, scope}) do
-    IO.inspect("2222222222222222222222222")
-    "uploads/libraries/#{scope.id}" |> IO.inspect()
+    "uploads/libraries/#{scope.avatar_uuid}"
   end
 
   # Override the storage directory:
