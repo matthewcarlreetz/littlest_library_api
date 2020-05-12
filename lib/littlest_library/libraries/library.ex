@@ -9,9 +9,8 @@ defmodule LittlestLibrary.Libraries.Library do
     field :zip, :string
     field :latitude, :float
     field :longitude, :float
-    field :status, :string
-    field :image, :binary
-    field :thumbnail, :binary
+    field :status, :string, default: "pending"
+    field :avatar_uuid, Ecto.UUID
 
     timestamps()
   end
@@ -26,10 +25,9 @@ defmodule LittlestLibrary.Libraries.Library do
       :zip,
       :latitude,
       :longitude,
-      :image,
-      :thumbnail,
+      :avatar_uuid,
       :status
     ])
-    |> validate_required([:address, :city, :state, :zip, :latitude, :longitude, :status])
+    |> validate_required([:address, :city, :state, :zip, :latitude, :longitude, :avatar_uuid])
   end
 end

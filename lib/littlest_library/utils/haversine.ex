@@ -11,7 +11,7 @@ defmodule LittlestLibrary.Utils.Haversine do
     a =
       dlat * dlat + dlong * dlong * :math.cos(lat1 * @to_radians) * :math.cos(lat2 * @to_radians)
 
-    (@radians * 2 * :math.asin(:math.sqrt(a))) |> IO.inspect()
+    @radians * 2 * :math.asin(:math.sqrt(a))
   end
 
   def within_distance(libraries, location, radius_in_km) do

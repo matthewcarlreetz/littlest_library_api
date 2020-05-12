@@ -36,3 +36,5 @@ npm-debug.log
 /Mnesia.*
 
 .elixir_ls
+
+google-service-account.json
