@@ -22,6 +22,23 @@ defmodule LittlestLibrary.Libraries.LibraryStore do
   end
 
   @doc """
+  Returns the list of pending libraries.
+
+  ## Examples
+
+      iex> list_pending_libraries()
+      [%Library{}, ...]
+
+  """
+  def list_pending_libraries do
+    query =
+      from l in Library,
+        where: l.status == "pending"
+
+    Repo.all(query)
+  end
+
+  @doc """
   Returns the list of approved libraries.
 
   ## Examples

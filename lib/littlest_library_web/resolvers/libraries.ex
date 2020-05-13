@@ -7,6 +7,14 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
   Graph resolver for lane objects
   """
 
+  def pending_libraries(_parent, %{}, %{context: %{current_user: _current_user}}) do
+    {:ok, LibraryStore.list_pending_libraries()}
+  end
+
+  def pending_libraries(_parent, %{}, _) do
+    {:error, :unauthorized}
+  end
+
   def list_libraries(_parent, %{}, %{context: %{current_user: _current_user}}) do
     {:ok, LibraryStore.list_libraries()}
   end
@@ -18,7 +26,6 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
   def nearby_libraries(_parent, %{latitude: latitude, longitude: longitude}, _) do
     # TODO: Filter this down with a sql query before running Haversine
     all_libraries = LibraryStore.list_approved_libraries()
-
     libraries = Haversine.within_distance(all_libraries, {latitude, longitude}, 40)
 
     mapped_libraries =
@@ -66,18 +73,29 @@ defmodule LittlestLibraryWeb.Resolvers.Libraries do
         },
         _
       ) do
-    avatar_uuid = Ecto.UUID.generate()
-    Avatar.store({file, %{avatar_uuid: avatar_uuid}})
+    one_hundred_feet_in_km = 0.03048
 
-    LibraryStore.create_library(%{
-      address: address,
-      city: city,
-      state: state,
-      zip: zip,
-      latitude: latitude,
-      longitude: longitude,
-      avatar_uuid: avatar_uuid
-    })
+    all_libraries = LibraryStore.list_approved_libraries()
+
+    libraries =
+      Haversine.within_distance(all_libraries, {latitude, longitude}, one_hundred_feet_in_km)
+
+    if Enum.empty?(libraries) do
+      {:error, "There's already a library here"}
+    else
+      avatar_uuid = Ecto.UUID.generate()
+      Avatar.store({file, %{avatar_uuid: avatar_uuid}})
+
+      LibraryStore.create_library(%{
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
+        latitude: latitude,
+        longitude: longitude,
+        avatar_uuid: avatar_uuid
+      })
+    end
   end
 
   def approve_library(_parent, %{id: id}, %{context: %{current_user: _current_user}}) do

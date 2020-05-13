@@ -15,8 +15,12 @@ defmodule LittlestLibrary.Utils.Haversine do
   end
 
   def within_distance(libraries, location, radius_in_km) do
-    Enum.filter(libraries, fn l ->
-      distance(location, {l.latitude, l.longitude}) < radius_in_km
+    Enum.map(libraries, fn l ->
+      Map.put(l, :distance, distance(location, {l.latitude, l.longitude}))
     end)
+    |> Enum.filter(fn l ->
+      l.distance < radius_in_km
+    end)
+    |> Enum.sort(&(&1.distance < &2.distance))
   end
 end

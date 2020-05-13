@@ -11,6 +11,7 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
     field :zip, :string
     field :latitude, :float
     field :longitude, :float
+    field :distance, :float
     field :image, :string
     field :thumbnail, :string
     field :status, :string
@@ -48,14 +49,20 @@ defmodule LittlestLibraryWeb.Schema.Libraries do
       resolve(&Libraries.list_libraries/3)
     end
 
+    @desc "Get all nearby libraries"
     field :nearby_libraries, list_of(:library) do
       arg(:latitude, non_null(:float))
       arg(:longitude, non_null(:float))
       resolve(&Libraries.nearby_libraries/3)
     end
 
+    @desc "Get all pending libraries"
+    field :pending_libraries, list_of(:library) do
+      resolve(&Libraries.pending_libraries/3)
+    end
+
+    @desc "Get a library by id"
     field :library, :library do
-      @desc "Get a library by id"
       arg(:id, non_null(:id))
       resolve(&Libraries.get_library/3)
     end
