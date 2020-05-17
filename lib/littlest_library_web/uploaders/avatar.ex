@@ -5,7 +5,7 @@ defmodule LittlestLibrary.Uploaders.Avatar do
   # use Arc.Ecto.Definition
 
   @acl :public_read
-  @versions [:original, :thumb]
+  @versions [:original, :thumb, :resized]
 
   # Override the bucket on a per definition basis:
   # def bucket do
@@ -20,6 +20,14 @@ defmodule LittlestLibrary.Uploaders.Avatar do
   # Define a thumbnail transformation:
   def transform(:thumb, _) do
     {:convert, "-strip -thumbnail 250x250^ -gravity center -extent 250x250 -format png", :png}
+  end
+
+  def transform(:resized, _) do
+    {:convert, "-strip -thumbnail 1242x1242^ -gravity center -extent 1242x1242 -format png", :png}
+  end
+
+  def transform(:original, _) do
+    {:convert, "-strip"}
   end
 
   # Override the persisted filenames:
